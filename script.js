@@ -78,19 +78,7 @@
   guide.className = "guide";
   guide.innerHTML =
     '<div class="bubble above"><b>Mango</b><span></span></div>' +
-    '<div class="sprite" title="Click to pause or resume the tour">' +
-    '<svg viewBox="0 0 64 64" aria-hidden="true">' +
-    '<g class="tail"><path d="M18 46c-12 2-14 12-6 14" fill="none" stroke="#7a4a26" stroke-width="5" stroke-linecap="round"/></g>' +
-    '<ellipse cx="32" cy="46" rx="13" ry="12" fill="#8a5630"/>' +
-    '<ellipse cx="32" cy="48" rx="8" ry="8" fill="#e8c9a0"/>' +
-    '<g class="arm-down"><path d="M21 42l-6 10M43 42l6 10" stroke="#8a5630" stroke-width="5" stroke-linecap="round"/></g>' +
-    '<g class="arm-up"><path d="M21 40l8-22M43 40l-8-22" stroke="#8a5630" stroke-width="5" stroke-linecap="round"/></g>' +
-    '<circle cx="19" cy="24" r="6" fill="#8a5630"/><circle cx="45" cy="24" r="6" fill="#8a5630"/>' +
-    '<circle cx="32" cy="26" r="14" fill="#8a5630"/>' +
-    '<ellipse cx="32" cy="30" rx="10" ry="8" fill="#e8c9a0"/>' +
-    '<circle cx="27.5" cy="25" r="2" fill="#2a2118"/><circle cx="36.5" cy="25" r="2" fill="#2a2118"/>' +
-    '<path d="M28 32q4 3 8 0" fill="none" stroke="#2a2118" stroke-width="1.6" stroke-linecap="round"/>' +
-    '</svg></div>';
+    '<div class="sprite" title="Click to pause or resume the tour"><div class="frame"></div></div>';
   var vine = document.createElementNS(NS, "svg");
   vine.setAttribute("class", "vine");
   var vineLine = document.createElementNS(NS, "line");
@@ -104,6 +92,21 @@
   var bubble = guide.querySelector(".bubble");
   var bubbleText = bubble.querySelector("span");
   var sprite = guide.querySelector(".sprite");
+  var frameEl = guide.querySelector(".frame");
+
+  // sprite sheet frames (see assets/make_mango.py)
+  var F = { idleA: 0, idleB: 1, blink: 2, talk: 3, talkB: 4, swingA: 5, swingB: 6, land: 7 };
+  var FW = 96; // 24px art at 4x
+  var mode = "idle", dir = 1, tick = 0, landUntil = 0;
+  function setFrame(i) { frameEl.style.backgroundPosition = -i * FW + "px 0"; }
+  setInterval(function () {
+    tick++;
+    if (performance.now() < landUntil) return setFrame(F.land);
+    if (mode === "swing") setFrame(tick % 2 ? F.swingA : F.swingB);
+    else if (mode === "talk") setFrame(tick % 2 ? F.talk : F.idleA);
+    else if (tick % 14 === 0) setFrame(F.blink);
+    else setFrame(Math.floor(tick / 3) % 2 ? F.idleB : F.idleA);
+  }, 140);
 
   var pos = { x: -100, y: -100 };
   var tilt = 0;
@@ -114,8 +117,10 @@
   var typer = 0;
 
   function place() {
-    guide.style.transform = "translate(" + (pos.x - 42) + "px," + (pos.y - 84) + "px)";
-    sprite.style.transform = "rotate(" + tilt + "deg)";
+    guide.style.transform = "translate(" + (pos.x - 48) + "px," + (pos.y - 96) + "px)";
+    sprite.style.transformOrigin = dir > 0 ? "79% 2%" : "21% 2%";
+    sprite.style.transform = "rotate(" + tilt * dir + "deg)";
+    frameEl.style.transform = "scaleX(" + dir + ")";
   }
   function perchPoint(t) {
     var r = t.el.getBoundingClientRect();
@@ -148,43 +153,45 @@
     bubbleText.textContent = text;
     guide.classList.add("talking");
     var w = bubble.getBoundingClientRect().width;
-    var flip = pos.x + (side === "right" ? 120 : 24) + w > innerWidth;
+    var flip = pos.x + (side === "right" ? 120 : 36) + w > innerWidth;
     bubble.classList.toggle("flip", flip);
     if (reduce) return;
+    mode = "talk";
     var i = 0;
     bubbleText.textContent = "";
     typer = setInterval(function () {
       bubbleText.textContent = text.slice(0, ++i);
-      if (i >= text.length) clearInterval(typer);
+      if (i >= text.length) { clearInterval(typer); mode = "idle"; }
     }, 22);
   }
-  function hush() { clearInterval(typer); guide.classList.remove("talking"); }
+  function hush() { clearInterval(typer); mode = "idle"; guide.classList.remove("talking"); }
 
   // swing along a pendulum arc about an anchor above the two perches
   function swing(from, to, tk) {
     return new Promise(function (res) {
-      if (reduce || from.x < -50) { pos.x = to.x; pos.y = to.y; tilt = 0; place(); return res(); }
+      if (reduce || from.x < -50) { pos.x = to.x; pos.y = to.y; tilt = 0; dir = 1; place(); return res(); }
       var ax = (from.x + to.x) / 2;
       var ay = Math.min(from.y, to.y) - 190;
       var a0 = Math.atan2(from.x - ax, from.y - ay), a1 = Math.atan2(to.x - ax, to.y - ay);
       var r0 = Math.hypot(from.x - ax, from.y - ay), r1 = Math.hypot(to.x - ax, to.y - ay);
       var dur = 950, t0 = performance.now();
+      dir = to.x >= from.x ? 1 : -1; mode = "swing";
       guide.classList.add("swinging");
       vineLine.style.display = "";
       (function frame(now) {
-        if (tk !== token) { vineLine.style.display = "none"; guide.classList.remove("swinging"); return res(); }
+        if (tk !== token) { vineLine.style.display = "none"; guide.classList.remove("swinging"); mode = "idle"; return res(); }
         var u = Math.min((now - t0) / dur, 1);
         var e = u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
         var a = a0 + (a1 - a0) * e, r = r0 + (r1 - r0) * e;
         pos.x = ax + Math.sin(a) * r;
         pos.y = ay + Math.cos(a) * r;
         tilt = -a * 57.3 * 0.6;
-        var hand = { x: pos.x, y: pos.y - 66 };
+        var hand = { x: pos.x + 30 * dir, y: pos.y - 94 };
         vineLine.setAttribute("x1", ax); vineLine.setAttribute("y1", Math.min(ay, 0));
         vineLine.setAttribute("x2", hand.x); vineLine.setAttribute("y2", hand.y);
         place();
         if (u < 1) requestAnimationFrame(frame);
-        else { vineLine.style.display = "none"; guide.classList.remove("swinging"); tilt = 0; place(); res(); }
+        else { vineLine.style.display = "none"; guide.classList.remove("swinging"); tilt = 0; dir = 1; mode = "idle"; landUntil = performance.now() + 260; place(); res(); }
       })(t0);
     });
   }
@@ -220,7 +227,7 @@
       if (!(await wait(Math.max(3200, s.say.length * 55), tk))) return;
     }
   }
-  function stop() { token++; running = false; vineLine.style.display = "none"; guide.classList.remove("swinging"); btn.textContent = "▶ Resume tour"; }
+  function stop() { token++; mode = "idle"; running = false; vineLine.style.display = "none"; guide.classList.remove("swinging"); btn.textContent = "▶ Resume tour"; }
   function toggle() { if (running) stop(); else run(); }
   btn.addEventListener("click", toggle);
   sprite.addEventListener("click", toggle);
