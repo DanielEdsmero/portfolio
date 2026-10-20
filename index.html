@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Daniel Edsmero — Developer Portfolio</title>
+  <meta name="description" content="Daniel Edsmero — student developer building gamified apps, web and mobile. Projects, experience and contact.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <a class="brand" href="#top">daniel<span>.dev</span></a>
+    <nav aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme" id="theme" aria-label="Toggle dark mode">◐</button>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <p class="eyebrow mono">Hi, I'm</p>
+      <h1>Daniel Edsmero<span class="dot">.</span></h1>
+      <p class="lead">Student developer from Bacolod, Philippines. I build <strong>gamified apps</strong> that make everyday habits easier to stick to — web, mobile and the databases behind them.</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my work</a>
+        <a class="btn" href="#contact">Get in touch</a>
+      </div>
+      <ul class="stats" aria-label="Highlights">
+        <li><b>1</b><span>shipped research app</span></li>
+        <li><b>2</b><span>platforms: web + phone</span></li>
+        <li><b>198</b><span>automated tests passing</span></li>
+      </ul>
+    </section>
+
+    <section id="about">
+      <h2><span class="mono">01</span> About</h2>
+      <div class="about">
+        <p>I'm a Grade 12 student at Liceo de La Salle – Bacolod who got hooked on turning ideas into working software. My main project, <strong>PetQuest</strong>, is a research app that uses virtual pets to help students manage their time.</p>
+        <p>I like projects where design and engineering meet: clean interfaces, honest data, and features people actually use. I'm looking for internships, collaborations and things worth building.</p>
+      </div>
+    </section>
+
+    <section id="experience">
+      <h2><span class="mono">02</span> Experience</h2>
+      <ol class="timeline">
+        <li>
+          <time class="mono">2025 — Present</time>
+          <h3>Lead Developer · PetQuest <small>Research project, Group 3</small></h3>
+          <p>Designed and built a gamified task manager with a React web app, an Expo phone app, Supabase backend, admin analytics and AI-assisted quest verification.</p>
+        </li>
+        <li>
+          <time class="mono">2024 — Present</time>
+          <h3>Senior High School <small>Liceo de La Salle – Bacolod</small></h3>
+          <p>Studying Grade 12. Research, programming and design coursework. <em>(Edit this with your strand and honors.)</em></p>
+        </li>
+        <li>
+          <time class="mono">Your year</time>
+          <h3>Placeholder: Internship / Freelance <small>Company or client</small></h3>
+          <p>Add a role here when you have one — one line on what you built and the result.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="projects">
+      <h2><span class="mono">03</span> Projects</h2>
+      <div class="grid">
+
+        <article class="card feature">
+          <img src="assets/app-home.webp" alt="PetQuest app home screen" loading="lazy">
+          <div class="body">
+            <span class="tag live">Live</span>
+            <h3>PetQuest</h3>
+            <p>Gamified task manager where completing quests keeps a virtual pet happy. Real auth, cloud sync, admin research dashboard with CSV export, and AI photo verification.</p>
+            <ul class="chips"><li>React</li><li>Vite</li><li>Expo</li><li>Supabase</li><li>Vercel</li></ul>
+            <div class="links">
+              <a href="https://petquest-final-ver.vercel.app/" target="_blank" rel="noopener">Live site ↗</a>
+              <a href="https://github.com/DanielEdsmero/petquest-final-ver" target="_blank" rel="noopener">Source ↗</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card placeholder">
+          <div class="body">
+            <span class="tag">Placeholder</span>
+            <h3>Your next big project</h3>
+            <p>Reserved for something portfolio-worthy. Ideas: a habit tracker with streaks, a school-schedule planner, or a small API with a public demo.</p>
+            <ul class="chips"><li>TBD</li></ul>
+          </div>
+        </article>
+
+        <article class="card placeholder">
+          <div class="body">
+            <span class="tag">Placeholder</span>
+            <h3>Personal website v2</h3>
+            <p>This site! Swap in a custom domain, add a blog, and write up how it was built.</p>
+            <ul class="chips"><li>HTML</li><li>CSS</li><li>JS</li></ul>
+          </div>
+        </article>
+
+        <article class="card placeholder">
+          <div class="body">
+            <span class="tag">Placeholder</span>
+            <h3>Open-source contribution</h3>
+            <p>Fix a bug or add a feature in a project you use, then link the pull request here.</p>
+            <ul class="chips"><li>Git</li><li>GitHub</li></ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2><span class="mono">04</span> Skills</h2>
+      <div class="skills">
+        <div><h3>Frontend</h3><ul class="chips"><li>JavaScript</li><li>React</li><li>HTML &amp; CSS</li><li>Tailwind</li><li>Vite</li></ul></div>
+        <div><h3>Mobile</h3><ul class="chips"><li>Expo</li><li>React Native</li><li>TypeScript</li></ul></div>
+        <div><h3>Backend &amp; Data</h3><ul class="chips"><li>Supabase</li><li>PostgreSQL</li><li>Row-level security</li><li>Serverless functions</li></ul></div>
+        <div><h3>Tools</h3><ul class="chips"><li>Git &amp; GitHub</li><li>Vercel</li><li>Node test runner</li><li>Claude Code</li></ul></div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2><span class="mono">05</span> Contact</h2>
+      <p class="lead small">Have a project, an internship, or just want to say hi? My inbox is open.</p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:your.email@example.com">your.email@example.com</a>
+        <a class="btn" href="https://github.com/DanielEdsmero" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© <span id="year"></span> Daniel Edsmero · Built by hand with HTML, CSS and a little JS.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
