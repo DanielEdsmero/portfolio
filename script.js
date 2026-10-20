@@ -10,7 +10,7 @@
   }
   var saved = null;
   try { saved = localStorage.getItem("theme"); } catch (e) {}
-  setTheme(saved || "dark");
+  setTheme(saved || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
   buttons.forEach(function (b) { b.addEventListener("click", function () { setTheme(b.dataset.themeSet); }); });
 
   // reading progress bar
@@ -53,5 +53,4 @@
   });
   layout();
 
-  // Alt+J / Alt+K are reserved for future features; ignore for now
 })();
