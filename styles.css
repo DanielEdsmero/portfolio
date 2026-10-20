@@ -141,3 +141,34 @@ footer a { border-bottom: 2px solid currentColor; }
   .affil { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+
+/* guide monkey */
+.guide { position: fixed; left: 0; top: 0; width: 84px; height: 84px; z-index: 60; pointer-events: none; will-change: transform; }
+.guide .sprite { position: absolute; inset: 0; transform-origin: 50% 0; pointer-events: auto; cursor: pointer; }
+.guide svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.guide .arm-up { opacity: 0; }
+.guide.swinging .arm-up { opacity: 1; }
+.guide.swinging .arm-down { opacity: 0; }
+.guide .tail { transform-origin: 20px 44px; animation: tail 1.6s ease-in-out infinite; }
+.guide.swinging .tail { animation-duration: .5s; }
+@keyframes tail { 0%,100% { transform: rotate(-12deg); } 50% { transform: rotate(14deg); } }
+.guide .bubble {
+  position: absolute; width: max-content; max-width: 240px; padding: 10px 14px;
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 14px;
+  font-size: 14px; line-height: 1.45; box-shadow: 0 10px 24px -12px rgba(60,40,20,.4);
+  opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s; pointer-events: none;
+}
+.guide.talking .bubble { opacity: 1; transform: none; }
+.guide .bubble b { display: block; font-size: 12px; color: var(--accent); margin-bottom: 2px; }
+.guide .bubble.above { bottom: 100%; left: 30px; margin-bottom: 4px; }
+.guide .bubble.right { left: 100%; top: 4px; margin-left: 6px; }
+.guide .bubble.flip { left: auto; right: 24px; }
+.guide .bubble.right.flip { right: 100%; margin-right: 6px; margin-left: 0; }
+.vine { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 59; pointer-events: none; }
+.vine line { stroke: #6f8f3a; stroke-width: 3; stroke-linecap: round; }
+.tour-btn {
+  position: fixed; right: 18px; bottom: 18px; z-index: 61; font: 600 13px var(--font);
+  background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 999px;
+  padding: 8px 16px; cursor: pointer; box-shadow: 0 6px 16px -8px rgba(60,40,20,.4);
+}
+.tour-btn:hover { border-color: var(--accent); color: var(--accent); }
